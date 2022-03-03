@@ -1,0 +1,101 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 20s
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'codelab-monitor'
+
+
+# Alerting specifies settings related to the Alertmanager
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        # Alertmanager's default port is 9093
+        - alertmanager:9093
+
+rule_files:
+  - alert.rules.yml
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'node'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets:
+        - udvo-cfip-001.titulo.net:9182
+        - udvo-crkp-003.titulo.net:9182
+        - udvo-crkp-004.titulo.net:9182
+        - lvtr-crkp-001.titulo.net:9182
+        # - udvo-firp-001.titulo.net:9182
+        # - udvo-jdjp-002.titulo.net:9182
+        # - udvo-netp-001.titulo.net:9182
+        # - udvo-sinp-001.titulo.net:9182
+        # - oci-sinp-006.titulo.net:9182
+        # - oci-sinp-001.titulo.net:9182
+        # - oci-sinp-002.titulo.net:9182
+        # - udvo-vtfp-001.titulo.net:9182
+        # - udvo-vtfp-002.titulo.net:9182
+        # - udvo-domp-001.titulo.net:9182
+        # - oci-sinp-003.titulo.net:9182
+        # - oci-sinp-004.titulo.net:9182
+        # - oci-sinp-005.titulo.net:9182
+        # - lvtr-jdjp-001.titulo.net:9182
+        # - ociv-sinp-006.titulo.net:9182
+        # - ociv-sinp-005.titulo.net:9182
+        # - ociv-sinp-004.titulo.net:9182
+        # - ociv-sinp-003.titulo.net:9182
+        # - ociv-sinp-001.titulo.net:9182
+        # - ociv-sinp-002.titulo.net:9182
+
+  - job_name: 'windows_qa_exporter'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['172.33.3.41:9182']
+  
+  # - job_name: 'ICMP_Proble_Blackbox'
+  #   metrics_path: /probe
+  #   params:
+  #     module: [icmp]
+  #   static_configs:
+  #     - targets:
+  #       # The hostname or IP address of the host you are targeting
+  #       - http://www.google.com
+  #   relabel_configs:
+  #     - source_labels: [__address__]
+  #       target_label: __param_target
+  #     - source_labels: [__param_target]
+  #       target_label: instance
+  #     - target_label: __address__
+  #       # Where Blackbox exporter was installed plust port
+  #       replacement: blackbox:9115
+
+  # Using the [http_2xx] module
+  - job_name: 'Blackbox_tcp'
+    metrics_path: /probe
+    params:
+      module: [http_2yy]
+    static_configs:
+      - targets:
+        # The http host you are targeting
+        - http://inoabrokertools.easynvest.com.br
+        - http://nettrader.easynvest.com.br/
+        - http://sinacor.easynvest.com.br:25153/login
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        #Where Blackbox exporter was installed plust port
+        replacement: blackbox:9115

@@ -1,0 +1,38 @@
+global:
+
+  # The API URL to use for Slack notifications.
+  # [ slack_api_url: <secret> ]
+  # [ slack_api_url_file: <filepath> ]
+  # [ pagerduty_url: <string> | default = "https://events.pagerduty.com/v2/enqueue" ]
+  # [ opsgenie_api_key: <secret> ]
+  # [ opsgenie_api_url: <string> | default = "https://api.opsgenie.com/" ]
+
+  # The default HTTP client configuration
+  # [ http_config: <http_config> ]
+
+  # ResolveTimeout is the default value used by alertmanager if the alert does
+  # not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated.
+  # This has no impact on alerts from Prometheus, as they always include EndsAt.
+  resolve_timeout: 5m
+
+# Files from which custom notification template definitions are read.
+# The last component may use a wildcard matcher, e.g. 'templates/*.tmpl'.
+# templates:
+#   [ - <filepath> ... ]
+
+# The root node of the routing tree.
+route: 
+  receiver: 'slack'
+
+# A list of notification receivers.
+# receivers:
+#     - name: 'slack'
+#       slack_configs:
+#           - send_resolved: true
+#             username: 'YOUR USERNAME'
+#             channel: '#YOURCHANNEL'
+#             api_url: 'INCOMMING WEBHOOK'
+
+# A list of inhibition rules.
+# inhibit_rules:
+#   [ - <inhibit_rule> ... ]
