@@ -14,3 +14,6 @@ modules:
       preferred_ip_protocol: ip4
       ip_protocol_fallback: true
       follow_redirects: true
+  tcp_connect:
+    prober: tcp
+  
